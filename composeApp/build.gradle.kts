@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.cocoapods)
     alias(libs.plugins.ktorfit)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
