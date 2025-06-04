@@ -8,7 +8,9 @@ import com.joel.ktorfitdemo.domain.state.ResponseState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import org.koin.core.annotation.Single
 
+@Single
 class TodoRepositoryImpl(
     private val service: ApiService
 ) : TodoRepository {
