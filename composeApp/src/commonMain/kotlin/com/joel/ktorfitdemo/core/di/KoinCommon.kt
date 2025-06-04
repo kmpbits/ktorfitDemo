@@ -2,6 +2,7 @@ package com.joel.ktorfitdemo.core.di
 
 import com.joel.ktorfitdemo.core.di.modules.NetworkModule
 import com.joel.ktorfitdemo.core.di.modules.RepositoryModule
+import com.joel.ktorfitdemo.core.di.modules.ViewModelModule
 import org.koin.core.KoinApplication
 import org.koin.core.annotation.Module
 import org.koin.core.context.startKoin
@@ -21,6 +22,7 @@ fun initApplication(appDeclaration: KoinAppDeclaration = {}): KoinApplication {
     includes = [
         RepositoryModule::class,
         NetworkModule::class,
+        ViewModelModule::class,
     ]
 )
 class AppModule
