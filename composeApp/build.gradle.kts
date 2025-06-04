@@ -61,6 +61,9 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.composeVM)
             api(libs.koin.annotations)
+            implementation(libs.serialization.json)
+            implementation(libs.content.negotiation)
+            implementation(libs.kotlinx.json)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
