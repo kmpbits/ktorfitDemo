@@ -1,4 +1,4 @@
-package com.joel.composedemo
+package com.joel.ktorfitdemo
 
 import androidx.compose.ui.window.ComposeUIViewController
 

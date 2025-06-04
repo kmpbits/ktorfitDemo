@@ -1,4 +1,4 @@
-package com.joel.composedemo
+package com.joel.ktorfitdemo
 
 import android.app.Application
 import android.os.Bundle

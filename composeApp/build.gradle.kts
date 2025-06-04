@@ -55,11 +55,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.joel.composedemo"
+    namespace = "com.joel.ktorfitdemo"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.joel.composepodsadmobdemo"
+        applicationId = "com.joel.ktorfitdemo"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -86,5 +86,5 @@ dependencies {
 }
 
 compose.resources {
-    packageOfResClass = "composedemo.composeapp.generated.resources"
+    packageOfResClass = "ktorfitdemo.composeapp.generated.resources"
 }
