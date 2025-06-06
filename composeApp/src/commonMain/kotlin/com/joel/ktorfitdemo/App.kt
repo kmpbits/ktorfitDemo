@@ -2,11 +2,13 @@ package com.joel.ktorfitdemo
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -55,7 +57,8 @@ fun App() {
                         items(todos) { todo ->
                             TodoItem(
                                 modifier = Modifier.fillMaxWidth(),
-                                todo = todo
+                                todo = todo,
+                                onCheckChanged = {}
                             )
                         }
                     }
@@ -68,18 +71,30 @@ fun App() {
 @Composable
 private fun TodoItem(
     modifier: Modifier = Modifier,
-    todo: Todo
+    todo: Todo,
+    onCheckChanged: (Boolean) -> Unit
 ) {
-    Column(
+    Row(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(
-            text = todo.title,
-            style = MaterialTheme.typography.bodyLarge,
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Text(
+                text = todo.title,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(8.dp)
+            )
+
+            HorizontalDivider()
+        }
+
+        Checkbox(
+            checked = todo.completed,
+            onCheckedChange = onCheckChanged,
             modifier = Modifier.padding(8.dp)
         )
-
-        HorizontalDivider()
     }
 }
