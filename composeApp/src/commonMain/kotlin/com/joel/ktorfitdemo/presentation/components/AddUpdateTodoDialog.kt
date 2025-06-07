@@ -1,0 +1,88 @@
+package com.joel.ktorfitdemo.presentation.components
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import org.jetbrains.compose.ui.tooling.preview.Preview
+
+@Composable
+fun AddUpdateTodoDialog(
+    onDismiss: () -> Unit,
+    dialogTitle: String,
+    todoTitle: String,
+    onTodoUpdate: (String) -> Unit,
+    isChecked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    Dialog(
+        onDismissRequest = onDismiss,
+    ) {
+        Surface(
+            modifier = Modifier.width(300.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text(
+                    text = dialogTitle,
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center
+                )
+
+                TextField(
+                    value = todoTitle,
+                    onValueChange = {
+                        onTodoUpdate(it)
+                    },
+                    placeholder = {
+                        Text(text = "Enter title")
+                    }
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Text("Checked?")
+                    Checkbox(
+                        checked = isChecked,
+                        onCheckedChange = onCheckedChange
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun AddUpdateTodoDialogPreview() {
+    MaterialTheme {
+        AddUpdateTodoDialog(
+            onDismiss = {},
+            dialogTitle = "Add Todo",
+            todoTitle = "",
+            onTodoUpdate = {},
+            isChecked = false,
+            onCheckedChange = {}
+        )
+    }
+
+}

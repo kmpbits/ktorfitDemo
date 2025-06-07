@@ -23,6 +23,40 @@ class TodoViewModel(
         getTodos()
     }
 
+    fun onAction(action: TodoAction) {
+        when (action) {
+            TodoAction.AddTodo -> {}
+            TodoAction.DismissAddUpdateDialog -> updateDialogVisibility(false)
+            TodoAction.ShowAddUpdateDialog -> updateDialogVisibility(true)
+            is TodoAction.UpdateIsChecked -> updateIsChecked(action.isChecked)
+            is TodoAction.UpdateTitle -> updateTitle(action.title)
+        }
+    }
+
+    fun updateDialogVisibility(isVisible: Boolean) {
+        _state.update {
+            it.copy(
+                isAddUpdateDialogVisible = isVisible
+            )
+        }
+    }
+
+    private fun updateTitle(title: String) {
+        _state.update {
+            it.copy(
+                title = title
+            )
+        }
+    }
+
+    private fun updateIsChecked(isChecked: Boolean) {
+        _state.update {
+            it.copy(
+                isChecked = isChecked
+            )
+        }
+    }
+
     private fun getTodos() = viewModelScope.launch {
         repository.getTodos().collectLatest { responseState ->
             _state.update {
