@@ -1,4 +1,4 @@
-# KoinInjectDemo
+# ktorfitDemo
 
 A minimalist Kotlin Multiplatform (KMP) demo showcasing how to use **Ktorfit** a Retrofit-style library for API calls in a Compose Multiplatform project.
 
