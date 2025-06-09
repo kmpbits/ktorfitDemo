@@ -5,7 +5,8 @@ import com.joel.ktorfitdemo.domain.state.ResponseState
 
 data class TodoState(
     val todoListState: ResponseState<List<Todo>> = ResponseState.Loading,
-    val title: String = "",
+    val title: String = "Add Todo",
+    val todoTitle: String = "",
     val isChecked: Boolean = false,
     val isAddUpdateDialogVisible: Boolean = false,
 )

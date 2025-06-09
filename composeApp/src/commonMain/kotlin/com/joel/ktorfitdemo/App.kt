@@ -1,6 +1,7 @@
 package com.joel.ktorfitdemo
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,13 +16,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joel.ktorfitdemo.domain.state.ResponseState
 import com.joel.ktorfitdemo.presentation.TodoAction
-import com.joel.ktorfitdemo.presentation.components.TodoItem
 import com.joel.ktorfitdemo.presentation.TodoViewModel
 import com.joel.ktorfitdemo.presentation.components.AddUpdateTodoDialog
+import com.joel.ktorfitdemo.presentation.components.TodoItem
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -35,8 +37,8 @@ fun App() {
     if (state.isAddUpdateDialogVisible) {
         AddUpdateTodoDialog(
             onDismiss = { viewModel.onAction(TodoAction.DismissAddUpdateDialog) },
-            dialogTitle = "Add Todo",
-            todoTitle = state.title,
+            dialogTitle = state.title,
+            todoTitle = state.todoTitle,
             onTodoUpdate = { viewModel.onAction(TodoAction.UpdateTitle(it)) },
             isChecked = state.isChecked,
             onCheckedChange = { viewModel.onAction(TodoAction.UpdateIsChecked(it)) }
@@ -53,7 +55,12 @@ fun App() {
         ) { values ->
             when(val response = state.todoListState) {
                 is ResponseState.Error -> Text(response.message)
-                ResponseState.Loading -> CircularProgressIndicator()
+                ResponseState.Loading -> Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
                 is ResponseState.Success -> {
                     val todos = response.data
 

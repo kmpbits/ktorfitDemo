@@ -44,7 +44,7 @@ class TodoViewModel(
     private fun updateTitle(title: String) {
         _state.update {
             it.copy(
-                title = title
+                todoTitle = title
             )
         }
     }
