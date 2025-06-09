@@ -1,7 +1,6 @@
 package com.joel.ktorfitdemo.data.repository
 
 import com.joel.ktorfitdemo.data.mapper.toModel
-import com.joel.ktorfitdemo.data.network.dto.TodoDto
 import com.joel.ktorfitdemo.data.network.service.ApiService
 import com.joel.ktorfitdemo.domain.model.Todo
 import com.joel.ktorfitdemo.domain.repository.TodoRepository
@@ -44,14 +43,12 @@ class TodoRepositoryImpl(
     ): Flow<ResponseState<Todo>> = flow {
         emit(ResponseState.Loading)
 
-        val dto = TodoDto(
-            userId = 1,
+        val dto = service.updateTodo(
             id = id,
             title = title,
             completed = completed
         )
 
-        service.updateTodo(id, dto)
         emit(ResponseState.Success(dto.toModel()))
     }.catch {
         emit(ResponseState.Error(it.message ?: "An error occurred"))

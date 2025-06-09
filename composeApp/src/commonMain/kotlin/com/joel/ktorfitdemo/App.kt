@@ -106,7 +106,7 @@ fun App() {
                                     },
                                 todo = todo,
                                 onCheckChanged = {
-                                    viewModel.onAction(TodoAction.UpdateTodoCheck(todo.id, it))
+                                    viewModel.onAction(TodoAction.UpdateTodoCheck(todo))
                                 }
                             )
                         }

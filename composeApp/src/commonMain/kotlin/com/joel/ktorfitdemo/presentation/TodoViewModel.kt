@@ -27,19 +27,28 @@ class TodoViewModel(
 
     fun onAction(action: TodoAction) {
         when (action) {
-            is TodoAction.AddUpdateTodo -> addTodo()
+            is TodoAction.AddUpdateTodo -> {
+                action.id?.let {
+                    updateTodo(it)
+                } ?: run {
+                    addTodo()
+                }
+            }
             TodoAction.DismissAddUpdateDialog -> updateDialogVisibility(false, null)
             is TodoAction.ShowAddUpdateDialog -> updateDialogVisibility(true, action.todo)
             is TodoAction.UpdateIsChecked -> updateIsChecked(action.isChecked)
             is TodoAction.UpdateTitle -> updateTitle(action.title)
-            is TodoAction.UpdateTodoCheck -> {
-                updateIsChecked(action.isChecked)
-                updateTodo(action.id)
-            }
+            is TodoAction.UpdateTodoCheck -> updateTodoCheck(action.todo)
         }
     }
 
-    fun updateDialogVisibility(isVisible: Boolean, todo: Todo?) {
+    private fun updateTodoCheck(todo: Todo) {
+        updateTitle(todo.title)
+        updateIsChecked(!todo.completed) // This is needed because we are only changing the isChecked value
+        updateTodo(todo.id)
+    }
+
+    private fun updateDialogVisibility(isVisible: Boolean, todo: Todo?) {
         _state.update {
             it.copy(
                 isAddUpdateDialogVisible = isVisible,

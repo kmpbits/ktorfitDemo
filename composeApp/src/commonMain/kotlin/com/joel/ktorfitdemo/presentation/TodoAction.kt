@@ -8,5 +8,5 @@ sealed interface TodoAction {
     data class ShowAddUpdateDialog(val todo: Todo? = null) : TodoAction
     data object DismissAddUpdateDialog : TodoAction
     data class AddUpdateTodo(val id: Int? = null) : TodoAction
-    data class UpdateTodoCheck(val id: Int, val isChecked: Boolean) : TodoAction
+    data class UpdateTodoCheck(val todo: Todo) : TodoAction
 }

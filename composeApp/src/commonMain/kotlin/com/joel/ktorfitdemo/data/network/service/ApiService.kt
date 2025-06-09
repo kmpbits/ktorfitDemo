@@ -1,7 +1,6 @@
 package com.joel.ktorfitdemo.data.network.service
 
 import com.joel.ktorfitdemo.data.network.dto.TodoDto
-import de.jensklingenberg.ktorfit.http.Body
 import de.jensklingenberg.ktorfit.http.DELETE
 import de.jensklingenberg.ktorfit.http.Field
 import de.jensklingenberg.ktorfit.http.FormUrlEncoded
@@ -26,9 +25,12 @@ interface ApiService {
     ): TodoDto
 
     @PUT("todos/{id}")
+    @FormUrlEncoded
     suspend fun updateTodo(
         @Path("id") id: Int,
-        @Body todo: TodoDto,
+        @Field("userId") userId: Int = 1,
+        @Field("title") title: String,
+        @Field("completed") completed: Boolean,
     ): TodoDto
 
     @DELETE("todos/{id}")
