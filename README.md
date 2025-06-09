@@ -67,6 +67,5 @@ KoinInjectDemo/
 ## 📚 Learn More
 
 - 📖 [Using Ktorfit in KMP](https://your-article-link.com)
-- 🧰 [Koin Official Documentation](https://insert-koin.io/docs)
-- 🧪 [Koin Testing Guide](https://insert-koin.io/docs/reference/koin-test/)
+- 🧰 [Ktorfit Official Documentation](https://foso.github.io/Ktorfit/)
 - 💡 [KMP Bits Repository](https://github.com/kmpbits)
