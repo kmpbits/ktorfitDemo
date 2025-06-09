@@ -8,7 +8,7 @@ A minimalist Kotlin Multiplatform (KMP) demo showcasing how to use **Ktorfit** a
 
 ## ✨ Features
 
-- **Koin Annotations**: Use annotations to make a request in an interface, like Retrofit
+- **API call Annotations**: Use annotations to make a request in an interface, like Retrofit
 - **Compose Multiplatform UI**: Shared UI code across Android and iOS platforms.
 - **Gradle & KSP Configuration**: Set up KSP for code generation and include generated sources in your build.
 - **ViewModel Integration**: Manage state with `StateFlow` and handle asynchronous operations using `viewModelScope`.
