@@ -1,10 +1,11 @@
 package com.joel.ktorfitdemo.presentation
 
+import com.joel.ktorfitdemo.domain.model.Todo
+
 sealed interface TodoAction {
     data class UpdateTitle(val title: String) : TodoAction
     data class UpdateIsChecked(val isChecked: Boolean) : TodoAction
-    data object ShowAddUpdateDialog : TodoAction
+    data class ShowAddUpdateDialog(val todo: Todo? = null) : TodoAction
     data object DismissAddUpdateDialog : TodoAction
-    data object AddTodo : TodoAction
-    data class UpdateTodo(val id: Int) : TodoAction
+    data class AddUpdateTodo(val id: Int? = null) : TodoAction
 }

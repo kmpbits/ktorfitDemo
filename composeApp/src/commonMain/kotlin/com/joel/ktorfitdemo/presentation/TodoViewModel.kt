@@ -2,6 +2,7 @@ package com.joel.ktorfitdemo.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.joel.ktorfitdemo.domain.model.Todo
 import com.joel.ktorfitdemo.domain.repository.TodoRepository
 import com.joel.ktorfitdemo.domain.state.ResponseState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,23 +27,22 @@ class TodoViewModel(
 
     fun onAction(action: TodoAction) {
         when (action) {
-            TodoAction.AddTodo -> addTodo()
-            TodoAction.DismissAddUpdateDialog -> updateDialogVisibility(false)
-            TodoAction.ShowAddUpdateDialog -> updateDialogVisibility(true)
+            is TodoAction.AddUpdateTodo -> addTodo()
+            TodoAction.DismissAddUpdateDialog -> updateDialogVisibility(false, null)
+            is TodoAction.ShowAddUpdateDialog -> updateDialogVisibility(true, action.todo)
             is TodoAction.UpdateIsChecked -> updateIsChecked(action.isChecked)
             is TodoAction.UpdateTitle -> updateTitle(action.title)
-            is TodoAction.UpdateTodo -> updateTodo(action.id)
         }
     }
 
-    fun updateDialogVisibility(isVisible: Boolean) {
+    fun updateDialogVisibility(isVisible: Boolean, todo: Todo?) {
         _state.update {
             it.copy(
                 isAddUpdateDialogVisible = isVisible,
-                title = if (isVisible) "Add Todo" else "Update Todo",
-                buttonTitle = if (isVisible) "Add" else "Update",
-                todoTitle = "",
-                isChecked = false
+                title = if (todo == null) "Add Todo" else "Update Todo",
+                buttonTitle = if (todo == null) "Add" else "Update",
+                todoTitle = todo?.title ?: "",
+                isChecked = todo?.completed ?: false
             )
         }
     }

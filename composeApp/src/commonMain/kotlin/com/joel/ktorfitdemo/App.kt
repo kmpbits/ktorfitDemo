@@ -1,5 +1,6 @@
 package com.joel.ktorfitdemo
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +21,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -38,13 +42,17 @@ fun App() {
     val viewModel = koinViewModel<TodoViewModel>()
     val state by viewModel.state.collectAsState()
 
+    var idClicked by remember {
+        mutableStateOf<Int?>(null)
+    }
+
     if (state.isAddUpdateDialogVisible) {
         AddUpdateTodoDialog(
             onDismiss = { viewModel.onAction(TodoAction.DismissAddUpdateDialog) },
             dialogTitle = state.title,
             todoTitle = state.todoTitle,
-            buttonTitle = "Add",
-            onAddToDo = { viewModel.onAction(TodoAction.AddTodo) },
+            buttonTitle = state.buttonTitle,
+            onAddToDo = { viewModel.onAction(TodoAction.AddUpdateTodo(idClicked)) },
             onTodoUpdate = { viewModel.onAction(TodoAction.UpdateTitle(it)) },
             isChecked = state.isChecked,
             onCheckedChange = { viewModel.onAction(TodoAction.UpdateIsChecked(it)) }
@@ -60,7 +68,10 @@ fun App() {
             },
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = { viewModel.onAction(TodoAction.ShowAddUpdateDialog) }
+                    onClick = {
+                        idClicked = null
+                        viewModel.onAction(TodoAction.ShowAddUpdateDialog())
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
@@ -88,7 +99,11 @@ fun App() {
                     ) {
                         items(todos) { todo ->
                             TodoItem(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier.fillMaxWidth()
+                                    .clickable {
+                                        idClicked = todo.id
+                                        viewModel.onAction(TodoAction.ShowAddUpdateDialog(todo))
+                                    },
                                 todo = todo,
                                 onCheckChanged = {}
                             )
