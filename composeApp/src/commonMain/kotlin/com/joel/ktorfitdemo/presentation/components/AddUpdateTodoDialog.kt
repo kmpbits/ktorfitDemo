@@ -3,6 +3,7 @@ package com.joel.ktorfitdemo.presentation.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -10,6 +11,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,6 +26,8 @@ fun AddUpdateTodoDialog(
     onDismiss: () -> Unit,
     dialogTitle: String,
     todoTitle: String,
+    buttonTitle: String,
+    onAddToDo: () -> Unit,
     onTodoUpdate: (String) -> Unit,
     isChecked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
@@ -66,6 +70,25 @@ fun AddUpdateTodoDialog(
                         onCheckedChange = onCheckedChange
                     )
                 }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    TextButton(
+                        onClick = onDismiss
+                    ) {
+                        Text("Cancel")
+                    }
+
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    TextButton(
+                        onClick = onAddToDo
+                    ) {
+                        Text(buttonTitle)
+                    }
+                }
             }
         }
     }
@@ -79,6 +102,8 @@ private fun AddUpdateTodoDialogPreview() {
             onDismiss = {},
             dialogTitle = "Add Todo",
             todoTitle = "",
+            buttonTitle = "Add",
+            onAddToDo = {},
             onTodoUpdate = {},
             isChecked = false,
             onCheckedChange = {}

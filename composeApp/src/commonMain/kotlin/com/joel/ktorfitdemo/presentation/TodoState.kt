@@ -7,6 +7,7 @@ data class TodoState(
     val todoListState: ResponseState<List<Todo>> = ResponseState.Loading,
     val title: String = "Add Todo",
     val todoTitle: String = "",
+    val buttonTitle: String = "Add",
     val isChecked: Boolean = false,
     val isAddUpdateDialogVisible: Boolean = false,
 )

@@ -6,4 +6,5 @@ sealed interface TodoAction {
     data object ShowAddUpdateDialog : TodoAction
     data object DismissAddUpdateDialog : TodoAction
     data object AddTodo : TodoAction
+    data class UpdateTodo(val id: Int) : TodoAction
 }
