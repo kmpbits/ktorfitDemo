@@ -97,9 +97,10 @@ fun App() {
                         contentPadding = values,
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        items(todos) { todo ->
+                        items(todos, key = { it.id }) { todo ->
                             TodoItem(
                                 modifier = Modifier.fillMaxWidth()
+                                    .animateItem() // This is to animate when delete an item
                                     .clickable {
                                         idClicked = todo.id
                                         viewModel.onAction(TodoAction.ShowAddUpdateDialog(todo))
@@ -107,7 +108,8 @@ fun App() {
                                 todo = todo,
                                 onCheckChanged = {
                                     viewModel.onAction(TodoAction.UpdateTodoCheck(todo))
-                                }
+                                },
+                                onDelete = { viewModel.onAction(TodoAction.DeleteTodo(todo.id)) }
                             )
                         }
                     }

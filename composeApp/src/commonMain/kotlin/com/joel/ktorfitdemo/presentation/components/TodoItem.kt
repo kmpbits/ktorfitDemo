@@ -4,15 +4,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
 import com.joel.ktorfitdemo.domain.model.Todo
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -21,6 +24,7 @@ fun TodoItem(
     modifier: Modifier = Modifier,
     todo: Todo,
     onCheckChanged: (Boolean) -> Unit,
+    onDelete: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -40,6 +44,16 @@ fun TodoItem(
                 checked = todo.completed,
                 onCheckedChange = onCheckChanged,
             )
+
+            IconButton(
+                onClick = onDelete,
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Delete Todo",
+                    tint = Color.Red
+                )
+            }
         }
 
         HorizontalDivider()
@@ -57,7 +71,8 @@ private fun TodoItemPreview() {
                 title = "Todo 1",
                 completed = true
             ),
-            onCheckChanged = {}
+            onCheckChanged = {},
+            onDelete = {}
         )
     }
 }

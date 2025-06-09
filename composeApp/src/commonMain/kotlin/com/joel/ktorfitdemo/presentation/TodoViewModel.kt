@@ -2,6 +2,8 @@ package com.joel.ktorfitdemo.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.joel.ktorfitdemo.core.utils.ListOperation
+import com.joel.ktorfitdemo.core.utils.modifyListById
 import com.joel.ktorfitdemo.domain.model.Todo
 import com.joel.ktorfitdemo.domain.repository.TodoRepository
 import com.joel.ktorfitdemo.domain.state.ResponseState
@@ -39,6 +41,7 @@ class TodoViewModel(
             is TodoAction.UpdateIsChecked -> updateIsChecked(action.isChecked)
             is TodoAction.UpdateTitle -> updateTitle(action.title)
             is TodoAction.UpdateTodoCheck -> updateTodoCheck(action.todo)
+            is TodoAction.DeleteTodo -> delete(action.id)
         }
     }
 
@@ -96,11 +99,18 @@ class TodoViewModel(
                 is ResponseState.Error -> {} // Not needed for this demo
                 ResponseState.Loading -> {} // Not needed for this demo
                 is ResponseState.Success -> {
-                    val newList =
-                        (state.value.todoListState as ResponseState.Success).data.toMutableList()
-                            .also {
-                                it.add(0, response.data)
-                            }
+                    val successState = state.value.todoListState as? ResponseState.Success
+                    val newItem = response.data
+
+                    val newList = successState?.data?.let {
+                        modifyListById(
+                            list = it,
+                            id = response.data.id,
+                            operation = ListOperation.ADD,
+                            idSelector = { it.id },
+                            newItem = newItem
+                        )
+                    } ?: emptyList()
 
                     _state.update {
                         it.copy(
@@ -130,13 +140,16 @@ class TodoViewModel(
                 ResponseState.Loading -> {} // Not needed for this demo
                 is ResponseState.Success -> {
                     val successState = state.value.todoListState as? ResponseState.Success
+                    val updatedItem = response.data
                     val newList = successState?.data?.let {
-                        updateItemById(
+                        modifyListById(
                             list = it,
                             id = id,
-                            newItem = response.data,
-                            idSelector = { item -> item.id }
+                            operation = ListOperation.UPDATE,
+                            idSelector = { it.id },
+                            newItem = updatedItem
                         )
+
                     } ?: listOf()
 
                     _state.update {
@@ -152,17 +165,32 @@ class TodoViewModel(
         }
     }
 
-    private fun <T> updateItemById(
-        list: List<T>,
-        id: Int,
-        newItem: T,
-        idSelector: (T) -> Int,
-    ): List<T> {
-        val mutableList = list.toMutableList()
-        val index = mutableList.indexOfFirst { idSelector(it) == id }
-        if (index >= 0) {
-            mutableList[index] = newItem
+    private fun delete(id: Int) = viewModelScope.launch {
+        repository.deleteTodo(id).collectLatest { response ->
+            when (response) {
+                is ResponseState.Error -> {} // Not needed for this demo
+                ResponseState.Loading -> {} // Not needed for this demo
+                is ResponseState.Success -> {
+                    val successState = state.value.todoListState as? ResponseState.Success
+                    val newList = successState?.data?.let {
+                        modifyListById(
+                            list = it,
+                            id = id,
+                            operation = ListOperation.DELETE,
+                            idSelector = { it.id }
+                        )
+                    } ?: emptyList()
+
+                    _state.update {
+                        it.copy(
+                            todoListState = ResponseState.Success(newList),
+                            isAddUpdateDialogVisible = false,
+                            todoTitle = "",
+                            isChecked = false
+                        )
+                    }
+                }
+            }
         }
-        return mutableList
     }
 }
