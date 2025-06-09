@@ -1,6 +1,6 @@
 # ktorfitDemo
 
-A minimalist Kotlin Multiplatform (KMP) demo showcasing how to use **Ktorfit** a Retrofit-style library for API calls in a Compose Multiplatform project.
+A minimalist Kotlin Multiplatform (KMP) demo showcasing how to use **Ktorfit**, a Retrofit-style library for API calls in a Compose Multiplatform project.
 
 > ⚙️ Part of the [KMP Bits](https://github.com/kmpbits) series — hands-on examples for real-world KMP development.
 
