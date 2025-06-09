@@ -32,6 +32,10 @@ class TodoViewModel(
             is TodoAction.ShowAddUpdateDialog -> updateDialogVisibility(true, action.todo)
             is TodoAction.UpdateIsChecked -> updateIsChecked(action.isChecked)
             is TodoAction.UpdateTitle -> updateTitle(action.title)
+            is TodoAction.UpdateTodoCheck -> {
+                updateIsChecked(action.isChecked)
+                updateTodo(action.id)
+            }
         }
     }
 
@@ -73,6 +77,7 @@ class TodoViewModel(
         }
     }
 
+    // This API is onlu for testing purpose. On new fetch, the new added Todo will be gone
     private fun addTodo() = viewModelScope.launch {
         val title = state.value.todoTitle
         val isChecked = state.value.isChecked
@@ -101,7 +106,54 @@ class TodoViewModel(
         }
     }
 
+    // This API is onlu for testing purpose. On new fetch, the new update Todo will be reverted
     private fun updateTodo(id: Int) = viewModelScope.launch {
+        val title = state.value.todoTitle
+        val isChecked = state.value.isChecked
 
+        repository.updateTodo(
+            id = id,
+            title = title,
+            completed = isChecked
+        ).collectLatest { response ->
+            when (response) {
+                is ResponseState.Error -> {} // Not needed for this demo
+                ResponseState.Loading -> {} // Not needed for this demo
+                is ResponseState.Success -> {
+                    val successState = state.value.todoListState as? ResponseState.Success
+                    val newList = successState?.data?.let {
+                        updateItemById(
+                            list = it,
+                            id = id,
+                            newItem = response.data,
+                            idSelector = { item -> item.id }
+                        )
+                    } ?: listOf()
+
+                    _state.update {
+                        it.copy(
+                            todoListState = ResponseState.Success(newList),
+                            isAddUpdateDialogVisible = false,
+                            todoTitle = "",
+                            isChecked = false
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun <T> updateItemById(
+        list: List<T>,
+        id: Int,
+        newItem: T,
+        idSelector: (T) -> Int,
+    ): List<T> {
+        val mutableList = list.toMutableList()
+        val index = mutableList.indexOfFirst { idSelector(it) == id }
+        if (index >= 0) {
+            mutableList[index] = newItem
+        }
+        return mutableList
     }
 }
