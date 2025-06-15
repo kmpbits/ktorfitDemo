@@ -66,6 +66,6 @@ KoinInjectDemo/
 
 ## 📚 Learn More
 
-- 📖 [Using Ktorfit in KMP](https://your-article-link.com)
+- 📖 [Using Ktorfit in KMP](https://medium.com/@kmpbits/ktorfit-kotlin-multiplatform-retrofit-like-networking-for-kmp-apps-6afea2499166)
 - 🧰 [Ktorfit Official Documentation](https://foso.github.io/Ktorfit/)
 - 💡 [KMP Bits Repository](https://github.com/kmpbits)
